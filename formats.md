@@ -80,7 +80,7 @@ One example of a parameter file for an ordinary lattice rule, in `lattice` forma
 
 ### Parameters for digital nets: `dnet` and `dnetup`
 
-A *digital net in base* $b$ with $n=b^k$ points is defined by selecting integers $s \geq 1$, $r \geq k \geq 1$, and $s$ matrices $\boldsymbol{C}_1,\dots,\boldsymbol{C}_s$ of size $r\times k$ with entries in $\mathbb{Z}_b$, called the generating matrices. For $i=0,\dots,n-1$, let $i = \sum_{\ell=0}^{k-1} a_{i,\ell} b^\ell$ be the expansion of $i$ in base $b$, and for $j=1,\dots s$, let
+A *digital net in base* $b$ with $n=b^k$ points is defined by selecting integers $s \geq 1$, $r \geq k \geq 1$, and $s$ matrices $\boldsymbol{C}_1,\dots,\boldsymbol{C}_s$ of size $r \times k$ with entries in $\mathbb{Z}_b$, called the generating matrices. For $i=0,\dots,n-1$, let $i = \sum_{\ell=0}^{k-1} a_{i,\ell} b^\ell$ be the expansion of $i$ in base $b$, and for $j=1,\dots s$, let
 
 $$(y_{i, j, 1}, \dots, y_{i, j, r})^T = \boldsymbol{C}_j \cdot  (a_{i, 0}, \dots, a_{i, k-1})^T$$
 
@@ -174,7 +174,7 @@ The other lines of the file specify the primitive polynomials and the initial di
 so this matrix is handled separately.
 
 The first number on each line is the dimension $j$. 
-The second number is the degree $c_j$ of the primitive polynomial $p_j(x)$ used for this dimension. The third number is the integer that corresponds to the binary representation of the inner coefficients of this polynomial (we ignore the first and last coefficients, they are always 1).For example, if the polynomial is $p_j(x) = x^4 + x^3 + 1$, the coefficients are "1 1 0 0 1", and after removing the first and last "1", we get 100 in base 2, which is 4, so the third column would contain the number 4. (Without removing the first and last "1", the number would be 25 instead.) After these three numbers, there are $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ where $m_{j,c}$ is the $c^\text{th}$ (real-valued) initial direction number for this coordinate, multiplied by $2^c$ to obtain an integer. This $m_{j,c}$ is the integer formed by taking the bits in row 1 to row $c$ of column $c$, in this order. The last bit is the bit on the diagonal, which is always 1, so all $m_{j,c}$'s are odd integers. I think this format comes from Bratley and Fox (1988).
+The second number is the degree $c_j$ of the primitive polynomial $p_j(x)$ used for this dimension. The third number is the integer that corresponds to the binary representation of the inner coefficients of this polynomial (we ignore the first and last coefficients, they are always 1). For example, if the polynomial is $p_j(x) = x^4 + x^3 + 1$, the coefficients are "1 1 0 0 1", and after removing the first and last "1", we get 100 in base 2, which is 4, so the third column would contain the number 4. (Without removing the first and last "1", the number would be 25 instead.) After these three numbers, there are $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ where $m_{j,c}$ is the $c^\text{th}$ (real-valued) initial direction number for this coordinate, multiplied by $2^c$ to obtain an integer. This $m_{j,c}$ is the integer formed by taking the bits in row 1 to row $c$ of column $c$, in this order. The last bit is the bit on the diagonal, which is always 1, so all $m_{j,c}$'s are odd integers. I think this format comes from Bratley and Fox (1988).
 
 We denote this format for Sobol parameters by the `soboljk` keyword. One example of a file in this format is shown below. The first line gives the type of file and the next three lines are comments that must be skipped by the reading program.
 

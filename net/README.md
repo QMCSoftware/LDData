@@ -1,1 +1,0 @@
-## Digital Net and Sequence Generating Matrices
