@@ -26,9 +26,9 @@ The most important formats are the first two, since the point sets covered by th
 
 All the point sets that we consider have the form
 
-$$P_n = \{\bm u_i \in [0,1)^s,\; i=0,\dots,n-1\}$$
+$$P_n = \{\boldsymbol{u}_i \in [0,1)^s,\; i=0,\dots,n-1\}$$
 
-where $n$ is the number of points and $s$ is the number of dimensions. The dimension $j$ goes from 1 to $s$ and there are $n$ points enumerated by $i$ going from 0 to $n-1$. (In computer code, $j$ usually starts at 0, whereas in math papers, it starts at 1; one must be careful about this discrepancy.) The .txt files that contain the parameters have one line per dimension, preceded by a few lines that contain general parameters, such as $s$, $n$, etc. We shall call these lines the *header* of the file. In the header, additional lines that start with `#` can be used for comments and descriptions;  these lines are totally optional and should be just skipped by the program that reads the file. Anything that starts with `\#` on any given line in the header should also be skipped. All these comments are only for human readers to better see what is in the file, they are not for the computer[^1]. One exception: the first line of the file must be a comment that contains the keyword for the file type; for example `dnet` for a digital net. The number of dimensions (number of lines after the header) can be much larger than what we usually need; it suffices to use the number of rows that are needed. 
+where $n$ is the number of points and $s$ is the number of dimensions. The dimension $j$ goes from 1 to $s$ and there are $n$ points enumerated by $i$ going from 0 to $n-1$. (In computer code, $j$ usually starts at 0, whereas in math papers, it starts at 1; one must be careful about this discrepancy.) The .txt files that contain the parameters have one line per dimension, preceded by a few lines that contain general parameters, such as $s$, $n$, etc. We shall call these lines the *header* of the file. In the header, additional lines that start with `#` can be used for comments and descriptions;  these lines are totally optional and should be just skipped by the program that reads the file. Anything that starts with `#` on any given line in the header should also be skipped. All these comments are only for human readers to better see what is in the file, they are not for the computer[^1]. One exception: the first line of the file must be a comment that contains the keyword for the file type; for example `dnet` for a digital net. The number of dimensions (number of lines after the header) can be much larger than what we usually need; it suffices to use the number of rows that are needed. 
 
 [^1]: Comments are now allowed only in the header lines, 
  not in the $s$ lines that follow.  This makes more sense.
@@ -37,7 +37,7 @@ The point sets can be extensible in the number of points $n$ or not (they can be
 
 [^2]: The range for which the points were built could be given in the file, but this makes things a bit more complicated for some point sets. For example, for ordinary lattice rules with a prime number of points, this additional info might be confusing for some users. For Sobol points, the range has no limit.
 
-In the proposed formats, the files do not assume a given computer word size (e.g., 32 bits or 64 bits).  The format is exactly the same regardless of the word size. Of course, if the file contains integers of more than 32 bits, the corresponding points cannot be generated properly on a 32-bit computer.  A comment in the file header can say it. 
+In the proposed formats, the files do not assume a given computer word size (e.g., 32 bits or 64 bits).  The format is exactly the same regardless of the word size. Of course, if the file contains integers of more than 32 bits, the corresponding points cannot be generated properly on a 32 bit computer.  A comment in the file header can say it. 
 
 Some users might prefer input files with no header at all, only the $s$ lines that give the generating vector or generating matrices.  In some languages (e.g., MATLAB), such a file can be read into a matrix by a simple "load file" command, so there is no need to to write any code to read the file. Users who want that can simply strip out the header from the files in standard format and use these naked files privately. We think that the header with human-readable comments as imposed by the standard will be very useful to many users.
 
@@ -51,9 +51,9 @@ The following sections describe the proposed text-file formats for the different
 
 For an ordinary *lattice rule of rank 1*, we have  
 
-$$P_n = \{\bm u_i = (i \bm a \bmod n)/n,\; i=0,\dots,n-1\}$$
+$$P_n = \{\boldsymbol{u}_i = (i \boldsymbol{a} \bmod n)/n,\; i=0,\dots,n-1\}$$
 
-where $\bm a = (a_1,\dots,a_s)$ is the generating vector. We must specify $s$, $n$, and $\bm a$.
+where $\boldsymbol{a} = (a_1,\dots,a_s)$ is the generating vector. We must specify $s$, $n$, and $\boldsymbol{a}$.
 
 In a `lattice` file, the first line must start with `# lattice`. After that, not counting the comment lines, the first line gives the number $s$ of dimensions, the second line gives the number $n$ of points, and lines 3 to $s+2$ give the coefficients $a_1,\dots, a_s$, one value per line. In the case of embedded lattice rules, $n$ would usually be a power of 2, say $n=2^k$, and the smaller embedded lattices will contain the first $2^{k-1}$ points, the first $2^{k-2}$ points, etc. 
 Additional comments in the file should tell when the lattice is embedded, which figure of merit and what weights were used, the construction method, etc. [^3]
@@ -80,9 +80,7 @@ One example of a parameter file for an ordinary lattice rule, in `lattice` forma
 
 ### Parameters for digital nets: `dnet` and `dnetup`
 
-A *digital net in base $b$* with $n=b^k$ points is defined by selecting integers $s \geq 1$, $r \geq k \geq 1$, and $s$ matrices $\boldsymbol{C}_1,\dots,\boldsymbol{C}_s$ of size $r\times k$ with entries in $\mathbb{Z}_b$, called the generating matrices.
-For $i=0,\dots,n-1$, let $i = \sum_{\ell=0}^{k-1} a_{i,\ell} b^\ell$ be the expansion
-of $i$ in base $b$, and for $j=1,\dots s$, let
+A *digital net in base* $b$ with $n=b^k$ points is defined by selecting integers $s \geq 1$, $r \geq k \geq 1$, and $s$ matrices $\boldsymbol{C}_1,\dots,\boldsymbol{C}_s$ of size $r\times k$ with entries in $\mathbb{Z}_b$, called the generating matrices. For $i=0,\dots,n-1$, let $i = \sum_{\ell=0}^{k-1} a_{i,\ell} b^\ell$ be the expansion of $i$ in base $b$, and for $j=1,\dots s$, let
 
 $$(y_{i, j, 1}, \dots, y_{i, j, r})^T = \boldsymbol{C}_j \cdot  (a_{i, 0}, \dots, a_{i, k-1})^T$$
 
@@ -90,11 +88,11 @@ and
 
 $$u_{i, j} = \sum_{\ell=1}^{r} y_{i, j, \ell} b^{-\ell}.$$
 
-The points $\bm u_i$ are defined by $\bm u_i = (u_{i,1},\dots,u_{i,s})$. Digital nets are usually in base $b=2$, but we allow a general (typically prime) base $b \ge 2$.
+The points $\boldsymbol{u}_i$ are defined by $\boldsymbol{u}_i = (u_{i,1},\dots,u_{i,s})$. Digital nets are usually in base $b=2$, but we allow a general (typically prime) base $b \ge 2$.
 
-The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first four non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), and $r$ (the number of rows in the generating matrices in base $b$). Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32-bit integers, but going forward we should use 64-bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`.By looking at $r$, one can see right away whether this file is good for 64-bit computers only or for 32-bit computers as well.
+The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first four non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), and $r$ (the number of rows in the generating matrices in base $b$). Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32 bit integers, but going forward we should use 64 bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`.By looking at $r$, one can see right away whether this file is good for 64 bit computers only or for 32 bit computers as well.
 
-The $s$ lines after this header will contain the $s$ generating matrices, one per line. Each of these lines contains $k$ integers smaller than $b^r$ giving the $k$ columns of $\boldsymbol{C}_j$, using by default the same encoding as in the class `DigitalNetBase2` in SSJ for $b=2$. That is, the base-$b$ representation of the integer gives the $r$ digits in the corresponding column, with the digit on the first row of the matrix (row 0) being the most significant, and the one on the last row (row $r-1$) being the least significant. For example, if $b=2$, $r=31$, and the first column has a 1 in the first row and 0 in all other rows,
+The $s$ lines after this header will contain the $s$ generating matrices, one per line. Each of these lines contains $k$ integers smaller than $b^r$ giving the $k$ columns of $\boldsymbol{C}_j$, using by default the same encoding as in the class `DigitalNetBase2` in SSJ for $b=2$. That is, the base $b$ representation of the integer gives the $r$ digits in the corresponding column, with the digit on the first row of the matrix (row 0) being the most significant, and the one on the last row (row $r-1$) being the least significant. For example, if $b=2$, $r=31$, and the first column has a 1 in the first row and 0 in all other rows,
 as is always the case for Sobol points, then the integer representation of this column will be $2^{30} = 1\,073\,741\,824$. If there is a 1 in the last row and 0 elsewhere, the representation will be $2^0 = 1$. If all 31 elements of the column are 1, the representation will be $2^{31}-1$. 
 
 One example of a file for a digital net in `dnet` format:
@@ -114,17 +112,17 @@ One example of a file for a digital net in `dnet` format:
 
 This differs from  Joe and Kuo (2008), where the $c$-th column (for $c\ge 1$) is represented by an integer smaller than $2^c$ (in base 2) and the least significant bit is the one on the diagonal. Their representation works when $\boldsymbol{C}_j$ is upper triangular, which is true for Sobol point sets, but not for digital nets in general.
 
-Recall that coordinate $j$ of the $i$-th point is obtained by multiplying the base-$b$ matrix $\boldsymbol{C}_j$ by the vector of digits of the representation of $i$ in base $b$, with the least significant digits of $i$ at the top. That is, the least significant digit of $i$ goes with the first column of $\boldsymbol{C}_j$. And the first row of $\boldsymbol{C}_j$ is for the most significant digit of output. With our representation of $\boldsymbol{C}_j$ by $k$ integers, the points are easy and fast to generate in base 2. We obtain `u[i,j]`, coordinate $j$ of point $i$, with the following code snippet, in which `C[j,c]` is the integer that represents column $c$ of $\boldsymbol{C}_j$:
+Recall that coordinate $j$ of the $i$-th point is obtained by multiplying the base $b$ matrix $\boldsymbol{C}_j$ by the vector of digits of the representation of $i$ in base $b$, with the least significant digits of $i$ at the top. That is, the least significant digit of $i$ goes with the first column of $\boldsymbol{C}_j$. And the first row of $\boldsymbol{C}_j$ is for the most significant digit of output. With our representation of $\boldsymbol{C}_j$ by $k$ integers, the points are easy and fast to generate in base 2. We obtain `u[i,j]`, coordinate $j$ of point $i$, with the following code snippet, in which `C[j,c]` is the integer that represents column $c$ of $\boldsymbol{C}_j$:
 
 ```python
-normFactor = 1.0 / (1 << r) # $2^(-r)$
+normFactor = 1.0 / (1 << r) # 2^(-r)
 coord = 0
 for c in range(k):
     coord ^= ((i >> c) & 1) * C[j,c]
     u[i,j] = coord * normFactor
 ```
 
-The `dnetup` format is similar to `dnet`, except that the representing integer of any given column is obtained by ordering the digits in the reverse way, from bottom up, so the one in the first row is the least significant one. This is the ordering used in the Magic Point Shop of Nuyens (2020). For example, in base 2 with $k=4$, the line "1 2 4 8" would represents the 4-by-4 diagonal matrix, and the line "1 3 7 15" would represents the 4-by-4 upper triangular matrix with all ones. The main advantage of this representation is that it does not depend on the parameter $r$ and the numbers in the columns tend to be smaller. On the other hand, it requires a reordering of the bits when computing the points $\bm u_i$ as in the code snippet above.  
+The `dnetup` format is similar to `dnet`, except that the representing integer of any given column is obtained by ordering the digits in the reverse way, from bottom up, so the one in the first row is the least significant one. This is the ordering used in the Magic Point Shop of Nuyens (2020). For example, in base 2 with $k=4$, the line "1 2 4 8" would represents the 4-by-4 diagonal matrix, and the line "1 3 7 15" would represents the 4-by-4 upper triangular matrix with all ones. The main advantage of this representation is that it does not depend on the parameter $r$ and the numbers in the columns tend to be smaller. On the other hand, it requires a reordering of the bits when computing the points $\boldsymbol{u}_i$ as in the code snippet above.  
 
 
 ### Parameters for polynomial lattice rules: `plattice`
@@ -133,13 +131,13 @@ The `dnetup` format is similar to `dnet`, except that the representing integer o
 
 $$P_n = \left\{\left(\varphi\left(\frac{h(z) a_1(z)}{Q(z)}\right), \dots, \varphi\left(\frac{h(z) a_s(z)}{Q(z)}\right)\right) : h(z)\in\mathbb{F}_b[z], \ \text{degree}(h(z)) < k\right\}.$$
 
-where $\mathbb{F}_b[z]$ is the space of polynomials with coefficients in $\mathbb{F}_b$, the *modulus* $Q(z) \in \mathbb{F}_b[z]$ is a polynomial of degree $k$, the *generating vector* $\bm a(z) = (a_1(z),\dots,a_s(z))\in \mathbb{F}_b[z]^s$ is a vector of $s$ polynomials of degrees less than $k$, and the mapping $\varphi$ is defined by
+where $\mathbb{F}_b[z]$ is the space of polynomials with coefficients in $\mathbb{F}_b$, the *modulus* $Q(z) \in \mathbb{F}_b[z]$ is a polynomial of degree $k$, the *generating vector* $\boldsymbol{a}(z) = (a_1(z),\dots,a_s(z))\in \mathbb{F}_b[z]^s$ is a vector of $s$ polynomials of degrees less than $k$, and the mapping $\varphi$ is defined by
 
 $$\varphi\left(\sum_{l = w}^{\infty} x_l z^{-l}\right) = \sum_{l = \max(w, 1)}^{\infty} x_l b^{-l}.$$
 
 This point set has $n = b^k$ points.
 
-We must specify the polynomial modulus $Q(z)$ and the polynomial generating vector $\bm a(z)$. The polynomial modulus will be represented as an integer that has $(k+1)$ digits in base $b$, and all the other polynomials will be represented as integers that have no more than $k$ digits in base $b$.  All these integers will be given in base 10 in the file, one per line. In practice, we usually have $b=2$, so $k$ represents the number of bits. The integer that represents a polynomial is obtained simply by replacing the formal variable by $b$. For example, if the polynomial is $Q(z) = z^4 + z^3 + 1$ and $b=2$, its coefficients are "1 1 0 0 1" and its integer representation is $2^4 + 2^3 + 1 = 25$. This is the usual representation, as used in  Goda and Dick (2015), for example. In the case of embedded point sets, the modulus should be $Q(z) = z^k$ for $n=b^k$ points, and its integer representation is $b^k$.  In particular, $Q(z) = z$ is represented by the integer $b$.
+We must specify the polynomial modulus $Q(z)$ and the polynomial generating vector $\boldsymbol{a}(z)$. The polynomial modulus will be represented as an integer that has $(k+1)$ digits in base $b$, and all the other polynomials will be represented as integers that have no more than $k$ digits in base $b$.  All these integers will be given in base 10 in the file, one per line. In practice, we usually have $b=2$, so $k$ represents the number of bits. The integer that represents a polynomial is obtained simply by replacing the formal variable by $b$. For example, if the polynomial is $Q(z) = z^4 + z^3 + 1$ and $b=2$, its coefficients are "1 1 0 0 1" and its integer representation is $2^4 + 2^3 + 1 = 25$. This is the usual representation, as used in  Goda and Dick (2015), for example. In the case of embedded point sets, the modulus should be $Q(z) = z^k$ for $n=b^k$ points, and its integer representation is $b^k$.  In particular, $Q(z) = z$ is represented by the integer $b$.
 
 As usual, the first line is a comment that tells the type of file. Then the first four non-comment lines give the base $b$, the number $s$ of dimensions, the degree $k$ of the polynomial modulus, and the integer representation of this polynomial. 
 Lines 5 to $s+4$ give the polynomials that form the generating vector, one per line, using the integer representation just explained. One example of a file for a polynomial lattice in the `plattice` format:
@@ -166,7 +164,7 @@ A polynomial lattice rule in base $b$ can also be represented as a digital net i
 
 ### Parameters for Sobol nets: `sobol` and `soboljk`
 
-The Sobol' construction provides another special case of digital nets (and sequences), in base 2. They are defined in many places, including  Joe and Kuo (2008). For each coordinate $j$, we select a primitive polynomial $p_j(z)$ of degree $c_j$, and $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ which are used to define the generating matrix $\bm C_j$. The real numbers $2^{-c} m_{j,c}$ are called the 
+The Sobol' construction provides another special case of digital nets (and sequences), in base 2. They are defined in many places, including  Joe and Kuo (2008). For each coordinate $j$, we select a primitive polynomial $p_j(z)$ of degree $c_j$, and $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ which are used to define the generating matrix $\boldsymbol{C}_j$. The real numbers $2^{-c} m_{j,c}$ are called the 
 initial *direction numbers*. More details are given in  Joe and Kuo (2008) and [here](http://umontreal-simul.github.io/ssj/docs/master/classumontreal_1_1ssj_1_1hups_1_1SobolSequence.html).
 
 One obvious option for these point sets is to adopt exactly the same format as Joe and Kuo (2008), because it is already used in many places. The only difference is that we now allow comment lines in the file. In the format of Joe and Kuo (2008), only the first line is skipped. In the proposed format, other comment lines can be added at the beginning of the file, e.g., to give the maximum number of dimensions in the file, the criterion and weights that were used, etc.
@@ -176,7 +174,7 @@ The other lines of the file specify the primitive polynomials and the initial di
 so this matrix is handled separately.
 
 The first number on each line is the dimension $j$. 
-The second number is the degree $c_j$ of the primitive polynomial $p_j(x)$ used for this dimension. The third number is the integer that corresponds to the binary representation of the inner coefficients of this polynomial (we ignore the first and last coefficients, they are always 1).For example, if the polynomial is $p_j(x) = x^4 + x^3 + 1$, the coefficients are "1 1 0 0 1", and after removing the first and last "1", we get 100 in base 2, which is 4, so the third column would contain the number 4. (Without removing the first and last "1", the number would be 25 instead.) After these three numbers, there are $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ where $m_{j,c}$ is the $c$th (real-valued) initial direction number for this coordinate, multiplied by $2^c$ to obtain an integer. This $m_{j,c}$ is the integer formed by taking the bits in row 1 to row $c$ of column $c$, in this order. The last bit is the bit on the diagonal, which is always 1, so all $m_{j,c}$'s are odd integers. I think this format comes from Bratley and Fox (1988).
+The second number is the degree $c_j$ of the primitive polynomial $p_j(x)$ used for this dimension. The third number is the integer that corresponds to the binary representation of the inner coefficients of this polynomial (we ignore the first and last coefficients, they are always 1).For example, if the polynomial is $p_j(x) = x^4 + x^3 + 1$, the coefficients are "1 1 0 0 1", and after removing the first and last "1", we get 100 in base 2, which is 4, so the third column would contain the number 4. (Without removing the first and last "1", the number would be 25 instead.) After these three numbers, there are $c_j$ integers $m_{j,1},\dots,m_{j,c_j}$ where $m_{j,c}$ is the $c^\text{th}$ (real-valued) initial direction number for this coordinate, multiplied by $2^c$ to obtain an integer. This $m_{j,c}$ is the integer formed by taking the bits in row 1 to row $c$ of column $c$, in this order. The last bit is the bit on the diagonal, which is always 1, so all $m_{j,c}$'s are odd integers. I think this format comes from Bratley and Fox (1988).
 
 We denote this format for Sobol parameters by the `soboljk` keyword. One example of a file in this format is shown below. The first line gives the type of file and the next three lines are comments that must be skipped by the reading program.
 
@@ -245,7 +243,7 @@ For a `shiftmod1` in $s$ dimensions, the file will contain $s$ in the first line
 0.1530364040t106301
 ```
 
-For a `dshift` with $r$ digits of accuracy in base $b$, in $s$ dimensions, the file will contain $b$ in the first line, $s$ in the second line, $r$ in the third line, and then $s$ integers from 0 to $b^r-1$, one per line. For the latter, the digits of the base-$b$ representation of the integer divided by $b^r$ will be added modulo $b$ to the corresponding digits of the base-$b$ representation of the coordinate.  For example, if $b=2$ and $r=31$, the randomization makes a xor of the 31 bits of this integer with the 31 most significant bits of the corresponding coordinate of each point.
+For a `dshift` with $r$ digits of accuracy in base $b$, in $s$ dimensions, the file will contain $b$ in the first line, $s$ in the second line, $r$ in the third line, and then $s$ integers from 0 to $b^r-1$, one per line. For the latter, the digits of the base $b$ representation of the integer divided by $b^r$ will be added modulo $b$ to the corresponding digits of the base $b$ representation of the coordinate.  For example, if $b=2$ and $r=31$, the randomization makes a xor of the 31 bits of this integer with the 31 most significant bits of the corresponding coordinate of each point.
 
 ```
 # dshift
@@ -274,9 +272,9 @@ Here is an example,
 ...
 ```
 
-For a `nuscramble` of the first $r \ge k$ digits, for $n=b^k$ points in base $b$ in $s$ dimensions, with the implementation proposed in Section 3 of Friedel and Keller (2002) and used for $b=2$ in class `DigitalNetBase2` of SSJ, we need $sn$ blocks of $r$ random digits in base $b$. Each such block can be represented as an integer in the range $\{0,1,\dots,b^r-1\}$. For $b=2$, these are $r$-bit integers. We can store these integers one row per dimension, $n$ integers per row. This gives the following `nuscramble` file format. The first non-comment line contains the base $b$, the second line gives the number $s$ of dimensions, the third line gives the scramble resolution (the number of digits that are scrambled), and the following $s$ lines give the $sn$ integers used for the scrambling, $n$ integers per line.  Note that this is the same amount of random numbers that we would need if we use plain Monte Carlo instead of RQMC[^4][^5].
+For a `nuscramble` of the first $r \ge k$ digits, for $n=b^k$ points in base $b$ in $s$ dimensions, with the implementation proposed in Section 3 of Friedel and Keller (2002) and used for $b=2$ in class `DigitalNetBase2` of SSJ, we need $sn$ blocks of $r$ random digits in base $b$. Each such block can be represented as an integer in the range $\{0,1,\dots,b^r-1\}$. For $b=2$, these are $r$ bit integers. We can store these integers one row per dimension, $n$ integers per row. This gives the following `nuscramble` file format. The first non-comment line contains the base $b$, the second line gives the number $s$ of dimensions, the third line gives the scramble resolution (the number of digits that are scrambled), and the following $s$ lines give the $sn$ integers used for the scrambling, $n$ integers per line.  Note that this is the same amount of random numbers that we would need if we use plain Monte Carlo instead of RQMC[^4][^5].
 
-[^4]: Another way of storing the NUS is as follows.  For each coordinate $j$, each point can be identified by a $k$-bit integer, and the NUS maps each such $k$ to a $r$-bit integer that corresponds to the scrambled coordinate $j$ of this point. So we can simply store this map in an array of size $b^k$ whose entry $i$ contains the corresponding $r$-bit integer. Applying this NUS is then fast and straightforward.
+[^4]: Another way of storing the NUS is as follows.  For each coordinate $j$, each point can be identified by a $k$ bit integer, and the NUS maps each such $k$ to a $r$ bit integer that corresponds to the scrambled coordinate $j$ of this point. So we can simply store this map in an array of size $b^k$ whose entry $i$ contains the corresponding $r$ bit integer. Applying this NUS is then fast and straightforward.
 
 [^5]: Alternative implementations of NUS that use a hashing function in place of a RNG are proposed in  Burley (2020) and Laine and Karras (2011). These methods might be faster and the is much less information to store to reproduce a given scramble, but the hashing function must be fixed, known, and reliable. This essentially amount to fixing the RNG and storing only its seed.
 
@@ -287,7 +285,7 @@ For a `nuscramble` of the first $r \ge k$ digits, for $n=b^k$ points in base $b$
 8    # s = 8 dimensions
 10   # k = 10, so n = 2^10 = 1024 points
 30   # r = 30 digits
-# The following s rows contain n = 1024 30-bit integers per row:
+# The following s rows contain n = 1024 30 bit integers per row:
 1173741824   906870912  615843556  213427728  ...  
 1012537125  1001975254  ...
 ...
