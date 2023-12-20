@@ -19,8 +19,6 @@ Joe and Kuo (2008) provide a file for up to 21201 dimensions for Sobol' points, 
 A lattice rule: give the modulus and the generating vector.
 - `dnet`
 A digital net: give the generating matrices, one per line.
-- `dnetup`
-Same as `dnet`, but with the digits read from bottom up in each column.
 - `plattice`
 A polynomial lattice rule: give the polynomial modulus and the generating vector.
 - `sobol`
@@ -85,7 +83,7 @@ One example of a parameter file for an ordinary lattice rule, in `lattice` forma
 26671 
 ```
 
-### Parameters for digital nets: `dnet` and `dnetup`
+### Parameters for digital nets: `dnet`
 
 A *digital net in base* $b$ with $n=b^k$ points is defined by selecting integers $s \geq 1$, $r \geq k \geq 1$, and $s$ matrices $\boldsymbol{C}_1,\dots,\boldsymbol{C}_s$ of size $r \times k$ with entries in $\mathbb{Z}_b$, called the generating matrices. For $i=0,\dots,n-1$, let $i = \sum_{\ell=0}^{k-1} a_{i,\ell} b^\ell$ be the expansion of $i$ in base $b$, and for $j=1,\dots s$, let
 
@@ -97,7 +95,7 @@ $$u_{i, j} = \sum_{\ell=1}^{r} y_{i, j, \ell} b^{-\ell}.$$
 
 The points $\boldsymbol{u}_i$ are defined by $\boldsymbol{u}_i = (u_{i,1},\dots,u_{i,s})$. Digital nets are usually in base $b=2$, but we allow a general (typically prime) base $b \ge 2$.
 
-The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first four non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), and $r$ (the number of rows in the generating matrices in base $b$). Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32 bit integers, but going forward we should use 64 bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`.By looking at $r$, one can see right away whether this file is good for 64 bit computers only or for 32 bit computers as well.
+The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first five non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), $r$ (the number of rows in the generating matrices in base $b$), and $o \in \{0,1\}$ (the ordering of the digits in the base $b$ expansion). For now, assume $o=1$ (the first row is the most significant bit). At the end of the section we discuss the case $o=0$ (the first row is the least significant bit). Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32 bit integers, but going forward we should use 64 bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`. By looking at $r$, one can see right away whether this file is good for 64 bit computers only or for 32 bit computers as well.
 
 The $s$ lines after this header will contain the $s$ generating matrices, one per line. Each of these lines contains $k$ integers smaller than $b^r$ giving the $k$ columns of $\boldsymbol{C}_j$, using by default the same encoding as in the class `DigitalNetBase2` in SSJ for $b=2$. That is, the base $b$ representation of the integer gives the $r$ digits in the corresponding column, with the digit on the first row of the matrix (row 0) being the most significant, and the one on the last row (row $r-1$) being the least significant. For example, if $b=2$, $r=31$, and the first column has a 1 in the first row and 0 in all other rows,
 as is always the case for Sobol points, then the integer representation of this column will be $2^{30} = 1\,073\,741\,824$. If there is a 1 in the last row and 0 elsewhere, the representation will be $2^0 = 1$. If all 31 elements of the column are 1, the representation will be $2^{31}-1$. 
@@ -111,6 +109,7 @@ One example of a file for a digital net in `dnet` format:
 8    # s = 8 dimensions
 10   # k = 10, so n = 2^10 = 1024 points
 31   # r = 31 digits
+1    # the first row is the most significant bit
 # The columns of gen. matrices C_1, ..., C_s, one matrix per line:
 1073741824   536870912  268435456  134217728  ...  
 2012537125  1382645254  ...
@@ -129,7 +128,7 @@ for c in range(k):
     u[i,j] = coord * normFactor
 ```
 
-The `dnetup` format is similar to `dnet`, except that the representing integer of any given column is obtained by ordering the digits in the reverse way, from bottom up, so the one in the first row is the least significant one. This is the ordering used in the Magic Point Shop of Nuyens (2020). For example, in base 2 with $k=4$, the line "1 2 4 8" would represents the 4-by-4 diagonal matrix, and the line "1 3 7 15" would represents the 4-by-4 upper triangular matrix with all ones. The main advantage of this representation is that it does not depend on the parameter $r$ and the numbers in the columns tend to be smaller. On the other hand, it requires a reordering of the bits when computing the points $\boldsymbol{u}_i$ as in the code snippet above.  
+When $o=0$, the integer representation of any given column is obtained by ordering the digits in the reverse way, from bottom up, so the one in the first row is the least significant one. This is the ordering used in the Magic Point Shop of Nuyens (2020). For example, in base 2 with $k=4$, the line "1 2 4 8" would represents the 4-by-4 diagonal matrix, and the line "1 3 7 15" would represents the 4-by-4 upper triangular matrix with all ones. The main advantage of this representation is that it does not depend on the parameter $r$ and the numbers in the columns tend to be smaller. On the other hand, it requires a reordering of the bits when computing the points $\boldsymbol{u}_i$ as in the code snippet above.  
 
 
 ### Parameters for polynomial lattice rules: `plattice`
@@ -146,8 +145,7 @@ This point set has $n = b^k$ points.
 
 We must specify the polynomial modulus $Q(z)$ and the polynomial generating vector $\boldsymbol{a}(z)$. The polynomial modulus will be represented as an integer that has $(k+1)$ digits in base $b$, and all the other polynomials will be represented as integers that have no more than $k$ digits in base $b$.  All these integers will be given in base 10 in the file, one per line. In practice, we usually have $b=2$, so $k$ represents the number of bits. The integer that represents a polynomial is obtained simply by replacing the formal variable by $b$. For example, if the polynomial is $Q(z) = z^4 + z^3 + 1$ and $b=2$, its coefficients are "1 1 0 0 1" and its integer representation is $2^4 + 2^3 + 1 = 25$. This is the usual representation, as used in  Goda and Dick (2015), for example. In the case of embedded point sets, the modulus should be $Q(z) = z^k$ for $n=b^k$ points, and its integer representation is $b^k$.  In particular, $Q(z) = z$ is represented by the integer $b$.
 
-As usual, the first line is a comment that tells the type of file. Then the first four non-comment lines give the base $b$, the number $s$ of dimensions, the degree $k$ of the polynomial modulus, and the integer representation of this polynomial. 
-Lines 5 to $s+4$ give the polynomials that form the generating vector, one per line, using the integer representation just explained. One example of a file for a polynomial lattice in the `plattice` format:
+As usual, the first line is a comment that tells the type of file. Then the first four non-comment lines give the base $b$, the number $s$ of dimensions, the degree $k$ of the polynomial modulus, and the integer representation of this polynomial. Lines 5 to $s+4$ give the polynomials that form the generating vector, one per line, using the integer representation just explained. One example of a file for a polynomial lattice in the `plattice` format:
 
 ```
 # plattice
@@ -167,7 +165,7 @@ Lines 5 to $s+4$ give the polynomials that form the generating vector, one per l
 17213
 ```
 
-A polynomial lattice rule in base $b$ can also be represented as a digital net in base $b$, so its parameters can also be provided in a file in the `dnet` or `dnetup` format, as for general digital net in base $b$. But the generating matrices have a special form and the above representation is much more compact (a single integer per row instead of $k$ integers per row). On the other hand, generating the points is faster with the generating matrices than with the polynomial representation, so the software that will use the `plattice` files and generate the points would usually first convert the polynomials into the corresponding generating matrices. LatNet Builder (L’Ecuyer et al., 2022) is also able to make the conversion and produce a file in the `dnet` format, for more convenience and better flexibility, so the user can select the format she/he prefers.
+A polynomial lattice rule in base $b$ can also be represented as a digital net in base $b$, so its parameters can also be provided in a file in the `dnet` format, as for general digital net in base $b$. But the generating matrices have a special form and the above representation is much more compact (a single integer per row instead of $k$ integers per row). On the other hand, generating the points is faster with the generating matrices than with the polynomial representation, so the software that will use the `plattice` files and generate the points would usually first convert the polynomials into the corresponding generating matrices. LatNet Builder (L’Ecuyer et al., 2022) is also able to make the conversion and produce a file in the `dnet` format, for more convenience and better flexibility, so the user can select the format she/he prefers.
 
 ### Parameters for Sobol nets: `sobol` and `soboljk`
 
