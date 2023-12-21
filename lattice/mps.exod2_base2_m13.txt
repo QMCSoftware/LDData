@@ -1,7 +1,6 @@
 # lattice
 # A 600-dimensional base-2 generating vector for order-2 weights up to 2^13 = 8192 points.
 # From the Magic Point Shop https://people.cs.kuleuven.be/~dirk.nuyens/qmc-generators/
-# File duplicated from https://bitbucket.org/dnuyens/qmc-generators/src/master/LATSEQ/exod2_base2_m13.txt
 600 # dimensions
 8192 # 2^13
 # coordinates of the generating vector, starting at j=1:
