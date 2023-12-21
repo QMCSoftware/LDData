@@ -95,7 +95,7 @@ $$u_{i, j} = \sum_{\ell=1}^{r} y_{i, j, \ell} b^{-\ell}.$$
 
 The points $\boldsymbol{u}_i$ are defined by $\boldsymbol{u}_i = (u_{i,1},\dots,u_{i,s})$. Digital nets are usually in base $b=2$, but we allow a general (typically prime) base $b \ge 2$.
 
-The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first five non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), $r$ (the number of rows in the generating matrices in base $b$), and $v \in \{0,1\}$ (the ordering of the digits in the base $b$ expansion). For now, assume $v=1$ (the first row is the most significant digit). At the end of the section we discuss the case $v=0$ (the first row is the least significant digit). Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32 bit integers, but going forward we should use 64 bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`. By looking at $r$, one can see right away whether this file is good for 64 bit computers only or for 32 bit computers as well.
+The proposed format to specify digital nets is as follows. The first line must start  with `# dnet`. Then the first four non-comment lines give $b$ (the base), $s$ (the number of dimensions), $k$ (the number of columns), and $r$ (the number of rows in the generating matrices in base $b$) Thus, the output values will have "precision" $b^{-r}$ (they will be integer multiples of $b^{-r}$).  For $b=2$, a common value in the past has been $r=31$ when using 32 bit integers, but going forward we should use 64 bit integers and $r=63$ or 64, or perhaps $r=53$ to exploit the full accuracy of a `double`. By looking at $r$, one can see right away whether this file is good for 64 bit computers only or for 32 bit computers as well.
 
 The $s$ lines after this header will contain the $s$ generating matrices, one per line. Each of these lines contains $k$ integers smaller than $b^r$ giving the $k$ columns of $\boldsymbol{C}_j$, using by default the same encoding as in the class `DigitalNetBase2` in SSJ for $b=2$. That is, the base $b$ representation of the integer gives the $r$ digits in the corresponding column, with the digit on the first row of the matrix (row 0) being the most significant, and the one on the last row (row $r-1$) being the least significant. For example, if $b=2$, $r=31$, and the first column has a 1 in the first row and 0 in all other rows,
 as is always the case for Sobol points, then the integer representation of this column will be $2^{30} = 1\,073\,741\,824$. If there is a 1 in the last row and 0 elsewhere, the representation will be $2^0 = 1$. If all 31 elements of the column are 1, the representation will be $2^{31}-1$. 
@@ -109,7 +109,6 @@ One example of a file for a digital net in `dnet` format:
 8    # s = 8 dimensions
 10   # k = 10, so n = 2^10 = 1024 points
 31   # r = 31 digits
-1    # the first row is the most significant bit
 # The columns of gen. matrices C_1, ..., C_s, one matrix per line:
 1073741824   536870912  268435456  134217728  ...  
 2012537125  1382645254  ...
@@ -127,8 +126,6 @@ for c in range(k):
     coord ^= ((i >> c) & 1) * C[j,c]
     u[i,j] = coord * normFactor
 ```
-
-When $v=0$, the integer representation of any given column is obtained by ordering the digits in the reverse way, from bottom up, so the one in the first row is the least significant one. This is the ordering used in the Magic Point Shop of Nuyens (2020). For example, in base 2 with $k=4$, the line "1 2 4 8" would represents the 4-by-4 diagonal matrix, and the line "1 3 7 15" would represents the 4-by-4 upper triangular matrix with all ones. The main advantage of this representation is that it does not depend on the parameter $r$ and the numbers in the columns tend to be smaller. On the other hand, it requires a reordering of the bits when computing the points $\boldsymbol{u}_i$ as in the code snippet above.  
 
 
 ### Parameters for polynomial lattice rules: `plattice`
