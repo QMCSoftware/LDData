@@ -1,4 +1,4 @@
-# dnetup
+# dnet
 # From the Magic Point Shop https://people.cs.kuleuven.be/~dirk.nuyens/qmc-generators/
 2 # base
 30 # dimensions 
