@@ -1,6 +1,6 @@
 # lattice
 # An extensible 3600-dimensional base-2 lattice with decaying product weights for pointset sizes between 2^10 and 2^20
-# From the website of Frances Kuo https://web.maths.unsw.edu.au/~fkuo/lattice/
+# A copy of "lattice-39101-1024-1048576.3600" from the website of Frances Kuo https://web.maths.unsw.edu.au/~fkuo/lattice/
 3600 # dimensions
 1048576 # 2^20
 # coordinates of the generating vector, starting at j=1:

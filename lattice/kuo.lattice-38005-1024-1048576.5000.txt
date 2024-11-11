@@ -1,6 +1,6 @@
 # lattice
 # An extensible 5000-dimensional base-2 lattice with equal product weights for pointset sizes between 2^10 and 2^20
-# From the website of Frances Kuo https://web.maths.unsw.edu.au/~fkuo/lattice/
+# A copy of "lattice-38005-1024-1048576.5000" from the website of Frances Kuo https://web.maths.unsw.edu.au/~fkuo/lattice/
 5000 # dimensions
 1048576 # 2^20
 # coordinates of the generating vector, starting at j=1:

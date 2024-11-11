@@ -1,5 +1,5 @@
 # dnet
-# Joe and Kuo direction numbers from https://web.maths.unsw.edu.au/~fkuo/sobol/index.html
+# Joe and Kuo direction numbers "joe-kuo-other-2.3900" from https://web.maths.unsw.edu.au/~fkuo/sobol/index.html
 2 # base
 3900 # dimensions 
 4294967296 # supports 2^32 points
