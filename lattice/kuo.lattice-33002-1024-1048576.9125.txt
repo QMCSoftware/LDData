@@ -1,4 +1,3 @@
-
 # lattice
 # An extensible 9125-dimensional base-2 lattice with order-3-weights for pointset sizes between 2^10 and 2^20
 # From the website of Frances Kuo https://web.maths.unsw.edu.au/~fkuo/lattice/
