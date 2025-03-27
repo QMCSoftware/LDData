@@ -1,3 +1,4 @@
 _ags/*
 *.DS_Store
-raw.githubusercontent.com/*
+demos/raw.githubusercontent.com/*
+*.ipynb-checkpoints
