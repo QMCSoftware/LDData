@@ -2,3 +2,6 @@ _ags/*
 *.DS_Store
 raw.githubusercontent.com/*
 *.ipynb-checkpoints
+/sc
+.vscode/settings.json
+*.pyc

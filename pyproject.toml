@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LDData"
+version = "0.0.0"
+description = "LDData helper package for tests"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [ { name = "QMCSoftware" } ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["LDData"]

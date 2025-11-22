@@ -1,0 +1,49 @@
+name: CI - Tests
+
+on:
+  push:
+    branches:
+      - main
+      - hug
+  pull_request:
+    branches:
+      - main
+      - hug
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+
+      - name: Ensure Git LFS
+        run: |
+          git lfs install --local || true
+
+      - name: Setup conda environment from env.yml
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: env.yml
+          activate-environment: lddata
+          auto-update-conda: true
+
+      - name: Install package into the conda env
+        shell: bash -l {0}
+        run: |
+          conda activate lddata
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install pytest
+
+      - name: Run tests
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash -l {0}
+        run: |
+          conda activate lddata
+          python -m pytest -q
