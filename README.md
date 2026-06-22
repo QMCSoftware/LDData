@@ -293,6 +293,15 @@ For a `nuscramble` of the first $r \ge k$ digits, for $n=b^k$ points in base $b$
 ...
 ```
 
+## Message-Passing Monte Carlo (MPMC)
+
+Message-Passing Monte Carlo (Rusch et al., 2024) is a deep learning method developed with the intention of finding optimal configurations originally for the star discrepancy criterion. The method was since extended to minimize a full suite of $L_2$-based discrepancy measures.
+
+Due to the large computational cost associated with the MPMC method, several common instaces of $(n,d)$ have been pre-trained and fine-tuned. Specifically, contained here in .npy format are $n=2^k$ for $k=4, 5, \ldots, 10$ for $d=2,3,4,5,8,10$ optimized for many $L_2$-discrepancy measures and their weighted variants (Clément et al., 2025). 
+
+Importantly, the weighted discrepancy measures depend on a choice of coordinate weights $\boldsymbol{\gamma} = (\gamma_1, \ldots, \gamma_d) \in \mathbb{R}^d_{\geq 0}$. Choosing the correct weight vector is often difficult and problem-dependent. Thus, the pre-trained sets in this repository are trained with weights all equal $1$, i.e., $\boldsymbol{\gamma} = \mathbf{1}$.
+
+
 ## File names and other recommendations
 
 It is strongly recommend that all file names start with the corresponding keyword, like `plattice` for a polynomial lattice rule, `sobol` for a Sobol point set, and `lmscramble` for a left matrix scramble, for example.
@@ -301,6 +310,7 @@ It is also recommended to put enough relevant comments in each file for a knowle
 
 
 We also want some unit tests: some specific parameter files together with the correct output that should be observed when generating the points from these files.
+
 
 ## References 
 
@@ -313,3 +323,5 @@ We also want some unit tests: some specific parameter files together with the co
 - P. L’Ecuyer. SSJ: Stochastic simulation in Java. http://simul.iro.umontreal.ca/ssj/, accessed 9th August 2021, 2016.
 - P. L’Ecuyer, P. Marion, M. Godin, and F. Puchhammer. A tool for custom construction of QMC and RQMC point sets. In A. Keller, editor, Monte Carlo and Quasi-Monte Carlo Methods: MCQMC 2020, pages 51–70, Berlin, 2022. Springer. https://arxiv.org/abs/2012.10263.
 - D. Nuyens. The magic point shop, 2020. https://people.cs.kuleuven.be/~dirk.nuyens/qmc-generators/.
+- T. K. Rusch, N. Kirk, M. Bronstein, C. Lemieux, D. Rus. Message-Passing Monte Carlo: Generating low-discrepancy point sets with graph neural networks. Proc. Natl. Acad. Sci. U.S.A 121(40) e2409913121, https://doi.org/10.1073/pnas.2409913121, 2024.
+- F. Clément, N. Kirk, A. B. Owen, T. K. Rusch. On the optimization of discrepancy measures. arXiv Preprint 2508.04926, 2025.
